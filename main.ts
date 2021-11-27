@@ -2,7 +2,13 @@ namespace SpriteKind {
     export const background = SpriteKind.create()
     export const jooj = SpriteKind.create()
     export const torch = SpriteKind.create()
+    export const ataque = SpriteKind.create()
 }
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (mySprite.vy == 0) {
+        mySprite.vy = -200
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile6`, function (sprite, location) {
     tiles.replaceAllTiles(assets.tile`myTile5`, assets.tile`myTile0`)
     tiles.replaceAllTiles(assets.tile`myTile4`, assets.tile`myTile0`)
@@ -289,12 +295,181 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             game.showLongText("é perigoso seguir em frente", DialogLayout.Bottom)
             game.showLongText("leve isto", DialogLayout.Bottom)
             game.splash("você pegou o item espada")
+            espada = true
         })
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (mySprite.vy == 0) {
-        mySprite.vy = -200
+    if (espada == true) {
+        timer.throttle("action", 1000, function () {
+            attack = sprites.create(img`
+                . . . . 
+                . . . . 
+                . . . . 
+                . . . . 
+                `, SpriteKind.ataque)
+            if (characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.FacingRight))) {
+                attack.setPosition(mySprite.x + 20, mySprite.y - 10)
+                characterAnimations.runFrames(
+                attack,
+                [img`
+                    . 1 1 . 1 1 . . 
+                    1 . 1 1 . 1 1 1 
+                    1 1 1 1 1 . . 1 
+                    . 1 1 1 1 1 . 1 
+                    . 1 1 1 1 1 1 1 
+                    . . 1 . 1 1 1 . 
+                    . 1 1 . 1 1 1 1 
+                    . 1 1 1 1 1 1 1 
+                    . . 1 1 . 1 . . 
+                    . . 1 1 . 1 . . 
+                    . . 1 . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    `,img`
+                    . . 1 1 . . . . 
+                    1 1 1 1 1 1 . . 
+                    . 1 1 1 1 1 1 . 
+                    . 1 1 1 1 1 1 . 
+                    . . 1 1 1 1 1 . 
+                    . . 1 1 1 1 1 1 
+                    . . 1 1 1 1 1 1 
+                    . . 1 1 1 1 1 1 
+                    . . 1 1 1 1 1 1 
+                    . . 1 1 1 1 1 1 
+                    . . 1 1 1 1 1 1 
+                    . . 1 1 1 . 1 . 
+                    . . 1 1 1 1 1 . 
+                    . . 1 1 1 1 1 . 
+                    . . 1 1 1 1 1 . 
+                    . 1 1 1 1 1 1 . 
+                    . 1 . 1 1 1 1 . 
+                    . 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    1 1 1 1 1 . . . 
+                    1 1 1 1 . . . . 
+                    1 1 1 . . . . . 
+                    `,img`
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . 1 . 
+                    . . . . . . 1 . 
+                    . . . 1 . 1 1 . 
+                    . . 1 1 1 1 1 . 
+                    . . 1 1 1 1 1 1 
+                    . . 1 1 1 1 1 1 
+                    . . 1 1 1 1 1 1 
+                    . 1 1 1 1 1 1 . 
+                    . . 1 1 1 1 1 . 
+                    1 1 1 1 1 1 . . 
+                    1 1 . . 1 1 . . 
+                    `],
+                100,
+                characterAnimations.rule(Predicate.FacingRight)
+                )
+                timer.after(350, function () {
+                    attack.destroy()
+                })
+            } else if (characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.FacingLeft))) {
+                attack.setPosition(mySprite.x - 20, mySprite.y - 10)
+                characterAnimations.runFrames(
+                attack,
+                [img`
+                    . . 1 1 . 1 1 . 
+                    1 1 1 . 1 1 . 1 
+                    1 . . 1 1 1 1 1 
+                    1 . 1 1 1 1 1 . 
+                    1 1 1 1 1 1 1 . 
+                    . 1 1 1 . 1 . . 
+                    1 1 1 1 . 1 1 . 
+                    1 1 1 1 1 1 1 . 
+                    . . 1 . 1 1 . . 
+                    . . 1 . 1 1 . . 
+                    . . . . . 1 . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    `,img`
+                    . . . . 1 1 . . 
+                    . . 1 1 1 1 1 1 
+                    . 1 1 1 1 1 1 . 
+                    . 1 1 1 1 1 1 . 
+                    . 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    . 1 . 1 1 1 . . 
+                    . 1 1 1 1 1 . . 
+                    . 1 1 1 1 1 . . 
+                    . 1 1 1 1 1 . . 
+                    . 1 1 1 1 1 1 . 
+                    . 1 1 1 1 . 1 . 
+                    . . 1 1 1 1 1 . 
+                    . . 1 1 1 1 1 1 
+                    . . . 1 1 1 1 1 
+                    . . . . 1 1 1 1 
+                    . . . . . 1 1 1 
+                    `,img`
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . . . . . . . . 
+                    . 1 . . . . . . 
+                    . 1 . . . . . . 
+                    . 1 1 . 1 . . . 
+                    . 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    1 1 1 1 1 1 . . 
+                    . 1 1 1 1 1 1 . 
+                    . 1 1 1 1 1 . . 
+                    . . 1 1 1 1 1 1 
+                    . . 1 1 . . 1 1 
+                    `],
+                100,
+                characterAnimations.rule(Predicate.NotMoving)
+                )
+                timer.after(350, function () {
+                    attack.destroy()
+                })
+            }
+        })
     }
 })
 tiles.onMapLoaded(function (tilemap4) {
@@ -309,6 +484,7 @@ tiles.onMapLoaded(function (tilemap4) {
     tiles.coverAllTiles(assets.tile`myTile12`, sprites.dungeon.darkGroundNorth)
 })
 scene.onOverlapTile(SpriteKind.Player, tiles.util.door9, function (sprite, location) {
+    espada = false
     tiles.loadConnectedMap(ConnectionKind.Door2)
     tiles.placeOnRandomTile(mySprite, tiles.util.door14)
 })
@@ -385,6 +561,8 @@ scene.onOverlapTile(SpriteKind.Player, tiles.util.door3, function (sprite, locat
 })
 let statusbar: StatusBarSprite = null
 let tocha: Sprite = null
+let attack: Sprite = null
+let espada = false
 let mySprite: Sprite = null
 criar_personagem()
 let tilemap1 = tiles.createMap(tilemap`level1`)
