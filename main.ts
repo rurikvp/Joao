@@ -238,6 +238,60 @@ function animation2 () {
     characterAnimations.rule(Predicate.FacingLeft, Predicate.NotMoving)
     )
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (mySprite.tileKindAt(TileDirection.Left, assets.tile`myTile10`) || mySprite.tileKindAt(TileDirection.Right, assets.tile`myTile10`)) {
+        timer.throttle("dialogo", 100000, function () {
+            game.setDialogTextColor(15)
+            game.setDialogCursor(img`
+                . . . . 5 5 5 5 5 5 5 . . . . 
+                . . 5 5 2 2 2 2 2 2 2 5 5 . . 
+                . 5 5 2 2 2 9 9 9 2 2 2 5 5 . 
+                . 5 2 2 2 9 9 2 9 9 2 2 2 5 . 
+                . f 2 2 9 9 9 9 9 9 9 2 2 f . 
+                . f 7 2 9 2 2 2 2 2 9 2 7 f . 
+                . f 7 7 2 2 2 2 2 2 2 7 7 f . 
+                . f 5 5 7 7 7 7 7 7 7 5 5 f . 
+                f f 5 5 5 5 5 5 5 5 5 5 5 f f 
+                f d f f 5 5 5 5 5 5 5 f f d f 
+                f d d d f f f f f f f d d d f 
+                f f a d d d d d d d d d a f f 
+                f f f f f a a a a a f f f f f 
+                f f a a a a a a a a a a a f f 
+                . f f a a a a a a a a a f f . 
+                . . . f f f f f f f f f . . . 
+                `)
+            game.setDialogFrame(img`
+                ..99999999999999999999..
+                .9966666666666666666699.
+                996661111111111111166699
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                966611111111111111116669
+                996661111111111111166699
+                .9966666666666666666699.
+                ..99999999999999999999..
+                `)
+            game.showLongText("é perigoso seguir em frente", DialogLayout.Bottom)
+            game.showLongText("leve isto", DialogLayout.Bottom)
+            game.splash("você pegou o item espada")
+        })
+    }
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (mySprite.vy == 0) {
         mySprite.vy = -200
@@ -251,6 +305,7 @@ tiles.onMapLoaded(function (tilemap4) {
     tiles.placeOnRandomTile(mySprite, tiles.util.door4)
     tiles.coverAllTiles(assets.tile`myTile6`, assets.tile`myTile0`)
     tiles.coverAllTiles(assets.tile`myTile11`, assets.tile`myTile0`)
+    tiles.coverAllTiles(tiles.util.door14, assets.tile`myTile0`)
 })
 scene.onOverlapTile(SpriteKind.Player, tiles.util.door9, function (sprite, location) {
     tiles.loadConnectedMap(ConnectionKind.Door2)
@@ -264,6 +319,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.torch, function (sprite, otherSp
     lantern.startLanternEffect(mySprite)
     lantern.setLightBandWidth(30)
     lantern.setBreathingEnabled(true)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
+    timer.throttle("action", 1000, function () {
+        statusbar.value += -25
+    })
 })
 function criar_personagem () {
     mySprite = sprites.create(img`
@@ -294,6 +354,7 @@ function criar_personagem () {
     statusbar.setColor(7, 3)
     statusbar.setLabel("HP")
     statusbar.setPosition(scene.cameraProperty(CameraProperty.X) - 49, scene.cameraProperty(CameraProperty.Y) - 56)
+    statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
 }
 scene.onOverlapTile(SpriteKind.Player, tiles.util.door3, function (sprite, location) {
     tiles.loadConnectedMap(ConnectionKind.Door1)
