@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const background = SpriteKind.create()
     export const jooj = SpriteKind.create()
+    export const torch = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile6`, function (sprite, location) {
     tiles.replaceAllTiles(assets.tile`myTile5`, assets.tile`myTile0`)
@@ -242,15 +243,27 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         mySprite.vy = -200
     }
 })
-tiles.onMapLoaded(function (tilemap3) {
+tiles.onMapLoaded(function (tilemap4) {
     tiles.coverAllTiles(tiles.util.door4, assets.tile`myTile1`)
     tiles.coverAllTiles(tiles.util.door3, assets.tile`myTile0`)
     tiles.coverAllTiles(tiles.util.door12, assets.tile`myTile0`)
+    tiles.coverAllTiles(tiles.util.door9, assets.tile`myTile0`)
     tiles.placeOnRandomTile(mySprite, tiles.util.door4)
     tiles.coverAllTiles(assets.tile`myTile6`, assets.tile`myTile0`)
+    tiles.coverAllTiles(assets.tile`myTile11`, assets.tile`myTile0`)
+})
+scene.onOverlapTile(SpriteKind.Player, tiles.util.door9, function (sprite, location) {
+    tiles.loadConnectedMap(ConnectionKind.Door2)
+    tiles.placeOnRandomTile(mySprite, tiles.util.door14)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile8`, function (sprite, location) {
     tiles.replaceAllTiles(assets.tile`myTile8`, assets.tile`myTile9`)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.torch, function (sprite, otherSprite) {
+    tocha.destroy(effects.fire, 100)
+    lantern.startLanternEffect(mySprite)
+    lantern.setLightBandWidth(30)
+    lantern.setBreathingEnabled(true)
 })
 function criar_personagem () {
     mySprite = sprites.create(img`
@@ -285,12 +298,36 @@ function criar_personagem () {
 scene.onOverlapTile(SpriteKind.Player, tiles.util.door3, function (sprite, location) {
     tiles.loadConnectedMap(ConnectionKind.Door1)
     tiles.placeOnRandomTile(mySprite, tiles.util.door12)
-    color.startFade(color.originalPalette, color.Sweet, 1500)
+    color.startFade(color.originalPalette, color.DIY, 1500)
+    tocha = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . 4 . . . 
+        . . . . . . . . . . . . 4 4 . . 
+        . . . . . . . . . . . 4 4 4 4 . 
+        . . . . . . . . . . . 4 4 2 4 . 
+        . . . . . . . . . . 4 4 2 2 4 4 
+        . . . . . . . . . 4 4 2 2 2 4 4 
+        . . e e e e e e 1 2 5 5 2 2 4 4 
+        e e e e e e e e 1 4 5 5 2 4 4 4 
+        `, SpriteKind.torch)
+    tiles.placeOnRandomTile(tocha, assets.tile`myTile11`)
+    lantern.startLanternEffect(tocha)
+    lantern.setLightBandWidth(15)
 })
 let statusbar: StatusBarSprite = null
+let tocha: Sprite = null
 let mySprite: Sprite = null
 criar_personagem()
 let tilemap1 = tiles.createMap(tilemap`level1`)
 let tilemap2 = tiles.createMap(tilemap`level6`)
+let tilemap3 = tiles.createMap(tilemap`level7`)
 tiles.loadMap(tilemap1)
+tiles.connectMapById(tilemap2, tilemap3, ConnectionKind.Door2)
 tiles.connectMapById(tilemap1, tilemap2, ConnectionKind.Door1)

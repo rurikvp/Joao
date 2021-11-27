@@ -7,7 +7,8 @@
         "arcade-character-animations": "github:microsoft/arcade-character-animations#v0.0.2",
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
         "Color Fading": "github:jwunderl/pxt-color#v0.2.1",
-        "Timers": "github:microsoft/arcade-timers#v1.1.0"
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "pxt-lantern": "github:riknoll/pxt-lantern#v0.1.2"
     },
     "files": [
         "main.blocks",
