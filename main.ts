@@ -239,7 +239,7 @@ function animation2 () {
     )
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (mySprite.tileKindAt(TileDirection.Left, assets.tile`myTile10`) || mySprite.tileKindAt(TileDirection.Right, assets.tile`myTile10`)) {
+    if (mySprite.tileKindAt(TileDirection.Left, assets.tile`myTile10`) || mySprite.tileKindAt(TileDirection.Right, assets.tile`myTile10`) || mySprite.tileKindAt(TileDirection.Center, assets.tile`myTile10`)) {
         timer.throttle("dialogo", 100000, function () {
             game.setDialogTextColor(15)
             game.setDialogCursor(img`
@@ -306,6 +306,7 @@ tiles.onMapLoaded(function (tilemap4) {
     tiles.coverAllTiles(assets.tile`myTile6`, assets.tile`myTile0`)
     tiles.coverAllTiles(assets.tile`myTile11`, assets.tile`myTile0`)
     tiles.coverAllTiles(tiles.util.door14, assets.tile`myTile0`)
+    tiles.coverAllTiles(assets.tile`myTile12`, sprites.dungeon.darkGroundNorth)
 })
 scene.onOverlapTile(SpriteKind.Player, tiles.util.door9, function (sprite, location) {
     tiles.loadConnectedMap(ConnectionKind.Door2)
@@ -351,7 +352,7 @@ function criar_personagem () {
     statusbar = statusbars.create(50, 4, StatusBarKind.Health)
     statusbar.max = 100
     statusbar.value = 100
-    statusbar.setColor(7, 3)
+    statusbar.setColor(7, 2, 3)
     statusbar.setLabel("HP")
     statusbar.setPosition(scene.cameraProperty(CameraProperty.X) - 49, scene.cameraProperty(CameraProperty.Y) - 56)
     statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
@@ -392,3 +393,10 @@ let tilemap3 = tiles.createMap(tilemap`level7`)
 tiles.loadMap(tilemap1)
 tiles.connectMapById(tilemap2, tilemap3, ConnectionKind.Door2)
 tiles.connectMapById(tilemap1, tilemap2, ConnectionKind.Door1)
+forever(function () {
+    if (mySprite.tileKindAt(TileDirection.Bottom, assets.tile`myTile12`)) {
+        timer.throttle("shake", 100000, function () {
+            scene.cameraShake(6, 1000)
+        })
+    }
+})
