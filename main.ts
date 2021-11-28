@@ -493,8 +493,6 @@ tiles.onMapLoaded(function (tilemap4) {
     tiles.coverAllTiles(assets.tile`myTile11`, assets.tile`myTile0`)
     tiles.coverAllTiles(tiles.util.door14, assets.tile`myTile0`)
     tiles.coverAllTiles(assets.tile`myTile12`, sprites.dungeon.darkGroundNorth)
-    tiles.coverAllTiles(tiles.util.arrow1, assets.tile`myTile0`)
-    tiles.coverAllTiles(tiles.util.arrow4, assets.tile`myTile0`)
     tiles.coverAllTiles(tiles.util.object4, assets.tile`myTile0`)
     tiles.placeOnRandomTile(mySprite, tiles.util.door4)
 })
@@ -671,7 +669,7 @@ scene.onOverlapTile(SpriteKind.Player, tiles.util.door3, function (sprite, locat
     timer.throttle("activate", 100000, function () {
         tiles.loadConnectedMap(ConnectionKind.Door1)
         tiles.placeOnRandomTile(mySprite, tiles.util.door12)
-        color.startFade(color.originalPalette, color.DIY, 1500)
+        color.startFade(color.originalPalette, color.DIY, 500)
         tocha = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
